@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Chi tiết loài – VQG Bạch Mã{% endblock %}
+{% block content %}
+<div class="detail-header">
+  <h3>{{ species.common_name }}
+    <small><em>{{ species.scientific_name }}</em></small>
+  </h3>
+  <div class="detail-actions">
+    <a class="btn" href="{{ url_for('index') }}">← Quay lại danh sách</a>
+    {% if current_user.is_authenticated %}
+      <a class="btn primary" href="{{ url_for('edit_species', species_id=species.id) }}">✏ Sửa</a>
+    {% endif %}
+  </div>
+</div>
+
+<div class="detail-layout">
+  <div class="detail-info">
+    <p><strong>Họ:</strong> {{ species.family }}</p>
+    <p><strong>Chi:</strong> {{ species.genus }}</p>
+    <p><strong>Vị trí:</strong> {{ species.location }}</p>
+    <p><strong>Trạng thái:</strong> {{ species.status }}</p>
+  </div>
+
+  <div class="detail-gallery">
+    <h4>Ảnh minh họa</h4>
+    <div class="gallery-grid">
+      {% set imgs = [species.img1, species.img2, species.img3, species.img4] %}
+      {% for img in imgs %}
+        {% if img %}
+        <button class="gallery-item" type="button" onclick="openLightbox('{{ url_for('uploaded_file', filename=img) }}')">
+          <img src="{{ url_for('uploaded_file', filename=img) }}" alt="Ảnh minh họa" loading="lazy">
+        </button>
+        {% endif %}
+      {% endfor %}
+      {% if not imgs[0] and not imgs[1] and not imgs[2] and not imgs[3] and species.image_path %}
+        <button class="gallery-item" type="button" onclick="openLightbox('{{ url_for('uploaded_file', filename=species.image_path) }}')">
+          <img src="{{ url_for('uploaded_file', filename=species.image_path) }}" alt="Ảnh minh họa" loading="lazy">
+        </button>
+      {% endif %}
+      {% if not imgs[0] and not imgs[1] and not imgs[2] and not imgs[3] and not species.image_path %}
+        <p class="muted">Chưa có ảnh minh họa.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="detail-description">
+  <h4>Mô tả</h4>
+  <p style="white-space: pre-wrap;">{{ species.description }}</p>
+</div>
+
+<!-- Lightbox đơn giản -->
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+  <img id="lightbox-img" src="" alt="Xem ảnh lớn">
+</div>
+
+<script>
+  function openLightbox(src) {
+    const lb = document.getElementById('lightbox');
+    const img = document.getElementById('lightbox-img');
+    img.src = src;
+    lb.classList.add('open');
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+  }
+</script>
+{% endblock %}

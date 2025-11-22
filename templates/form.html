@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Sửa' if species else 'Thêm' }} loài – VQG Bạch Mã{% endblock %}
+{% block content %}
+<h3 style="margin-top:0">{{ 'Sửa' if species else 'Thêm' }} loài</h3>
+<form class="grid" method="post" enctype="multipart/form-data">
+  <div>
+    <label>Tên thường gọi / Tên Việt Nam *</label>
+    <input type="text" name="common_name" value="{{ species.common_name if species else '' }}" required>
+  </div>
+  <div>
+    <label>Tên khoa học *</label>
+    <input type="text" name="scientific_name" value="{{ species.scientific_name if species else '' }}" required>
+  </div>
+  <div>
+    <label>Họ *</label>
+    <input type="text" name="family" value="{{ species.family if species else '' }}" required>
+  </div>
+  <div>
+    <label>Chi</label>
+    <input type="text" name="genus" value="{{ species.genus if species else '' }}">
+  </div>
+  <div>
+    <label>Vị trí</label>
+    <input type="text" name="location" value="{{ species.location if species else '' }}">
+  </div>
+  <div>
+    <label>Trạng thái</label>
+    <input type="text" name="status" value="{{ species.status if species else '' }}">
+  </div>
+  <div class="full">
+    <label>Mô tả</label>
+    <textarea name="description" rows="4">{{ species.description if species else '' }}</textarea>
+  </div>
+
+  <div class="full">
+    <label>Ảnh minh họa (tối đa 4 ảnh)</label>
+    <p class="muted" style="margin-top:2px;">Có thể để trống nếu chưa có ảnh. Khi sửa, nếu không chọn ảnh mới thì hệ thống giữ nguyên ảnh cũ.</p>
+    <div class="gallery-grid">
+      <div>
+        <small>Ảnh 1</small>
+        <input type="file" name="img1" accept="image/*">
+        {% if species and species.img1 %}
+          <img class="thumb-small" src="{{ url_for('uploaded_file', filename=species.img1) }}" alt="Ảnh 1 hiện có">
+        {% endif %}
+      </div>
+      <div>
+        <small>Ảnh 2</small>
+        <input type="file" name="img2" accept="image/*">
+        {% if species and species.img2 %}
+          <img class="thumb-small" src="{{ url_for('uploaded_file', filename=species.img2) }}" alt="Ảnh 2 hiện có">
+        {% endif %}
+      </div>
+      <div>
+        <small>Ảnh 3</small>
+        <input type="file" name="img3" accept="image/*">
+        {% if species and species.img3 %}
+          <img class="thumb-small" src="{{ url_for('uploaded_file', filename=species.img3) }}" alt="Ảnh 3 hiện có">
+        {% endif %}
+      </div>
+      <div>
+        <small>Ảnh 4</small>
+        <input type="file" name="img4" accept="image/*">
+        {% if species and species.img4 %}
+          <img class="thumb-small" src="{{ url_for('uploaded_file', filename=species.img4) }}" alt="Ảnh 4 hiện có">
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="full" style="margin-top:8px;">
+    <button class="btn primary" type="submit">💾 Lưu</button>
+    <a class="btn" href="{{ url_for('index') }}">Hủy</a>
+  </div>
+</form>
+{% endblock %}

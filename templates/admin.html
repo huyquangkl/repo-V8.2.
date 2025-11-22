@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Bảng điều khiển quản trị – VQG Bạch Mã{% endblock %}
+{% block content %}
+<h3>Bảng điều khiển quản trị</h3>
+<div class="stats-grid">
+  <div class="card">
+    <h4>Tổng số loài</h4>
+    <p class="big">{{ total_species }}</p>
+  </div>
+  <div class="card">
+    <h4>Số loài có ảnh minh họa</h4>
+    <p class="big">{{ with_images }}</p>
+  </div>
+  <div class="card">
+    <h4>Người dùng quản trị</h4>
+    <p class="big">{{ admin_username }}</p>
+  </div>
+</div>
+
+<h4 style="margin-top:20px;">Danh sách loài cập nhật gần đây</h4>
+<table>
+  <thead>
+    <tr>
+      <th>Tên thường gọi</th>
+      <th>Tên khoa học</th>
+      <th>Họ</th>
+      <th>Trạng thái</th>
+      <th>Chi tiết</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for sp in latest %}
+    <tr>
+      <td>{{ sp.common_name }}</td>
+      <td><em>{{ sp.scientific_name }}</em></td>
+      <td>{{ sp.family }}</td>
+      <td>{{ sp.status }}</td>
+      <td><a class="btn" href="{{ url_for('detail_species', species_id=sp.id) }}">Xem</a></td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5">Chưa có dữ liệu.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
